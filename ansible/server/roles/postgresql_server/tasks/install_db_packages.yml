@@ -1,0 +1,37 @@
+- name: add gpg
+  apt:
+    name:
+      - gnupg2
+  become: yes
+
+- name: Add postgresql official deb repo signing key
+  become: yes
+  apt_key:
+      id: ACCC4CF8
+      url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+      state: present
+
+- name: Add postgresql official deb repo
+  become: yes
+  apt_repository:
+      repo: "deb http://apt.postgresql.org/pub/repos/apt/ {{ansible_distribution_release}}-pgdg main"
+      state: present
+
+- name: ensure apt cache is up to date
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: ensure database packages are installed
+  apt:
+    name:
+    - postgresql-{{postgresql_version}}
+    - postgresql-contrib-{{postgresql_version}}
+    - postgresql-client
+    - libpq-dev
+    # - python3-psycopg2
+  become: yes
+
+- name: check postgres server is running
+  service: name=postgresql state=started enabled=yes
+  become: yes

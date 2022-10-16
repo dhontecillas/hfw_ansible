@@ -1,0 +1,40 @@
+- name: Add Docker requirements
+  become: yes
+  apt:
+    name:
+      - gnupg2
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - software-properties-common
+
+- name: Add Docker official deb repo signing key
+  become: yes
+  apt_key:
+      url: https://download.docker.com/linux/debian/gpg
+      state: present
+
+- name: Add docker official deb repo
+  become: yes
+  apt_repository:
+      repo: "deb [arch=amd64] https://download.docker.com/linux/debian {{ansible_distribution_release}} stable"
+      state: present
+
+- name: Update packages
+  apt:
+    update_cache: yes
+  become: yes
+
+- name: Install docker
+  become: yes
+  apt:
+    name:
+      - docker-ce
+
+- name: Add deployer user to docker group
+  become: yes
+  ansible.builtin.user:
+    name: "{{ansible_user}}"
+    group: docker
+
+

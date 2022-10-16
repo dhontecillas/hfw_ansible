@@ -1,0 +1,2 @@
+- include_tasks: install_docker.yml
+- include_tasks: aws_s3_docker_registry.yml

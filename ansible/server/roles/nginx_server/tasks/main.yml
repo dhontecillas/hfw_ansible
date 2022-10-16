@@ -1,0 +1,20 @@
+- name: ensure web server packages and certbot are installed
+  apt:
+    name:
+    - nginx
+    - certbot
+  become: yes
+
+- name: check if nginx has default symbolic linked website file
+  stat:
+    path: /etc/nginx/sites-enabled/default
+  register: nginx_default_file
+
+- name: delete default symbolic linked website on nginx
+  command: rm /etc/nginx/sites-enabled/default
+  become: yes
+  when: nginx_default_file.stat.exists
+
+- name: restart nginx
+  service: name=nginx state=restarted
+  become: yes

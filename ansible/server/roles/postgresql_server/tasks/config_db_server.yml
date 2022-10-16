@@ -1,0 +1,25 @@
+- name: allow root to login as postgres user
+  become: yes
+  template:
+    src: pg_ident.conf.j2
+    dest: "/etc/postgresql/{{postgresql_version}}/main/pg_ident.conf"
+
+- name: update postgres access and listen for external hosts
+  become: yes
+  template:
+    src: pg_hba.conf.j2
+    dest: "/etc/postgresql/{{postgresql_version}}/main/pg_hba.conf"
+
+- name: update postgres configuration
+  become: yes
+  template:
+    src: postgresql.conf.j2
+    dest: "/etc/postgresql/{{postgresql_version}}/main/postgresql.conf"
+
+- name: restart postgresql
+  become: yes
+  service:
+    name: postgresql
+    state: restarted
+
+- meta: flush_handlers
