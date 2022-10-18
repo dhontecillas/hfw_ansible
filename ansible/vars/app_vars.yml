@@ -1,0 +1,12 @@
+app_domain: hfwserver.lh
+app_name: hfwserver
+app_release: "20221018_ab02c824a820"
+app_ssl: false
+app_db_name: djangoler
+app_db_user: djangoler
+app_db_password: djangoler
+app_docker_port: 5500
+app_docker_image: localhost:5000/djangoler:latest
+http_media_base: "/var/www"
+app_source_static_files: "/home/dhontecillas/tmp/foo/"
+app_db_backup_file: "/home/dhontecillas/tmp/backupfile/"

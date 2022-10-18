@@ -1,0 +1,40 @@
+- name: check if nginx ssl directory exists
+  stat: path=/etc/nginx/{{app_name}}
+  register: ssldir
+
+- name: create ssl directory for nginx if it does not already exist
+  command: mkdir /etc/nginx/{{app_name}}
+  become: yes
+  when: ssldir.stat.isdir is not defined
+
+- name: "NGINX write configuration for {{ app_name }} @ {{ app_domain }}:"
+  become: yes
+  when: app_ssl == true
+  template:
+    src: nginx_ssl_letsencrypt.conf.j2
+    dest: "/etc/nginx/conf.d/{{app_name}}_{{app_name}}.conf"
+  notify:
+    - restart nginx
+
+- name: "NGINX write configuration for {{ app_name }} @ {{ app_domain }}:"
+  become: yes
+  when: app_ssl == false
+  template:
+    src: nginx_no_ssl.conf.j2
+    dest: "/etc/nginx/conf.d/{{app_domain}}.conf"
+  notify:
+    - restart nginx
+
+- name: "Create static files directory"
+  become: yes
+  ansible.builtin.file:
+    path: "/var/www/static"
+    group: "{{ansible_user}}"
+    owner: "{{ansible_user}}"
+    mode: 0777
+    state: directory
+
+- name: "Upload static files"
+  ansible.builtin.copy:
+    src: "{{app_source_static_files}}"
+    dest: "/var/www/static/{{app_domain}}/{{app_release}}"

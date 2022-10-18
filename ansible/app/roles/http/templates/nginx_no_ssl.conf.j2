@@ -1,0 +1,37 @@
+upstream app_server_{{app_name}} {
+  server 127.0.0.1:{{app_docker_port}};
+}
+
+server {
+  listen 80;
+  server_name {{app_domain}};
+
+  ssl                  off;
+
+  access_log /var/log/nginx/{{app_domain}}.{{app_release}}.access.log;
+  error_log /var/log/nginx/{{app_domain}}.{{app_release}}.error.log info;
+
+  keepalive_timeout 5;
+
+  # nginx should serve up static files and never send to the WSGI server
+  location /static {
+    autoindex on;
+    alias /var/www/static/{{app_domain}}/{{app_release}};
+  }
+
+  location /media {
+    autoindex on;
+    alias {{http_media_base}}/{{app_domain}};
+  }
+
+  location / {
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header Host $http_host;
+    proxy_redirect off;
+
+    if (!-f $request_filename) {
+      proxy_pass http://app_server_{{app_name}};
+      break;
+    }
+  }
+}
