@@ -1,0 +1,28 @@
+#- name: "Push release imager"
+# We need to push the local
+#
+- name: "Pull most recent image"
+  docker_image:
+    name: "127.0.0.1:5000/{{app_name}}:{{app_release}}"
+    source: pull
+
+- name: "Create new docker container"
+  docker_container:
+    image: "127.0.0.1:5000/{{app_name}}:{{app_release}}"
+    name: "{{app_name}}_{{app_release}}"
+    published_ports:
+      - 8000
+    env:
+      POSTGRESQL_HOST: "{{app_db_host}}"
+      POSTGRESQL_NAME: "{{app_db_name}}"
+      POSTGRESQL_USER: "{{app_db_user}}"
+      POSTGRESQL_PASSWORD: "{{app_db_password}}"
+
+- name: "Find published port"
+  shell:
+    cmd: "docker port {{app_name}}_{{app_release}} | cut -f 2 -d ':'"
+  register: app_docker_port
+
+- name: "Echo found port {{app_docker_port.stdout}}"
+  shell:
+    cmd: "echo 'foo'"

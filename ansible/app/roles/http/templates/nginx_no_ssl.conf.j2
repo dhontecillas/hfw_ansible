@@ -1,5 +1,7 @@
+## SERVING_DOCKER_PORT {{app_name}}_{{app_release}}
+
 upstream app_server_{{app_name}} {
-  server 127.0.0.1:{{app_docker_port}};
+  server 127.0.0.1:{{app_docker_port.stdout}};
 }
 
 server {
