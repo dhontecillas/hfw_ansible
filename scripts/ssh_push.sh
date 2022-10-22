@@ -16,5 +16,5 @@ docker push $2
 
 # execute a remote command to terminate the previous ssh connection established
 # to forward the docker registry port
-ssh $1 "wget localhost:5001"
+ssh $1 "wget -q -O /dev/null -o /dev/null localhost:5001"
 

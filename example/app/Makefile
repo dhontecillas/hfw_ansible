@@ -1,5 +1,5 @@
 dockerbuild:
-	docker build --rm -t papp:$$(git rev-parse HEAD) .
+	docker build --rm -t localhost:5000/papp:$$(git rev-parse HEAD) .
 
 dockerrun:
 	docker run --name testtest \
