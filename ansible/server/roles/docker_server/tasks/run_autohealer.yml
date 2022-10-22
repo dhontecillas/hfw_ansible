@@ -1,0 +1,15 @@
+- name: "Pull autohealer registry image: willfarelll/autoheal"
+  docker_image:
+    name: willfarrell/autoheal:latest
+    source: pull
+
+- name: "Run autohealer at startup"
+  docker_container:
+    image: willfarrell/autoheal:latest
+    name: docker_autohealer
+    env:
+      AUTOHEAL_CONTAINER_LABEL=all
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart_policy: unless-stopped
+
