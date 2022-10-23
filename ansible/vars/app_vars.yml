@@ -1,6 +1,6 @@
 app_domain: hfwserver.lh
 app_name: papp
-app_release: "3dd64c8a765d121abb6af3f3abb4e00c92689ba9"
+app_release: "564219cf8ad388c3bf5836cbc083b57f095336ec"
 app_ssl: false
 app_db_host: 172.17.0.1
 app_db_name: djangoler

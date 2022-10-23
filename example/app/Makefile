@@ -3,7 +3,7 @@ server:
 
 dockerbuild:
 	docker build --rm \
-		--build-arg GIT_COMMIT=$(git rev-parse HEAD) \
+		--build-arg GIT_COMMIT=$$(git rev-parse HEAD) \
 		-t localhost:5000/papp:$$(git rev-parse HEAD) .
 
 dockerrun:
