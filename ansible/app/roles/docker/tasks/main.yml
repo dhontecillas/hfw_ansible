@@ -12,6 +12,7 @@
     name: "{{app_name}}_{{app_release}}"
     published_ports:
       - 8000
+    restart_policy: unless-stopped
     env:
       POSTGRESQL_HOST: "{{app_db_host}}"
       POSTGRESQL_NAME: "{{app_db_name}}"
@@ -22,7 +23,3 @@
   shell:
     cmd: "docker port {{app_name}}_{{app_release}} | cut -f 2 -d ':'"
   register: app_docker_port
-
-- name: "Echo found port {{app_docker_port.stdout}}"
-  shell:
-    cmd: "echo 'foo'"

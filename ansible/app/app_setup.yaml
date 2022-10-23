@@ -2,3 +2,4 @@
   roles:
     - docker
     - http
+    - docker_cleanup

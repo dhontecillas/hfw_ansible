@@ -8,6 +8,8 @@ import (
 	"time"
 )
 
+var GitCommit string
+
 func main() {
 	start := time.Now().UTC()
 
@@ -20,7 +22,10 @@ func main() {
 		defer healthyMux.Unlock()
 		if healthy {
 			w.Header().Add("content-type", "json")
-			w.Write(([]byte)(fmt.Sprintf("{\"alive\": %f}", time.Since(start).Seconds())))
+			w.Write(([]byte)(fmt.Sprintf(`{
+                "alive": %f,
+                "commit": %s
+            }`, time.Since(start).Seconds(), GitCommit)))
 		} else {
 			w.WriteHeader(http.StatusInternalServerError)
 		}

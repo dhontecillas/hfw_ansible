@@ -1,12 +1,3 @@
-- name: check if nginx ssl directory exists
-  stat: path=/etc/nginx/{{app_name}}
-  register: ssldir
-
-- name: create ssl directory for nginx if it does not already exist
-  command: mkdir /etc/nginx/{{app_name}}
-  become: yes
-  when: ssldir.stat.isdir is not defined
-
 - name: "NGINX write configuration for {{ app_name }} @ {{ app_domain }}:"
   become: yes
   when: app_ssl == true

@@ -1,0 +1,13 @@
+- name: "Find old instances to be deleted"
+  shell:
+    cmd: "docker ps -a -f name='{{app_name}}_*' --format {% raw %}{{.Names}}{% endraw %} | grep -v {{app_release}}"
+  when: app_skip_docker_cleanup == false
+  ignore_errors: true
+  register: app_old_containers
+
+- name: "Stop and delete instances"
+  docker_container:
+    name: "{{item}}"
+    state: absent
+  with_items: "{{app_old_containers.stdout_lines}}"
+  ignore_errors: true
