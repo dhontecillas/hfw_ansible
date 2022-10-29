@@ -24,6 +24,15 @@
     password: "{{app_db_password}}"
     priv: ALL
 
+- name: make public schema writable
+  become: yes
+  community.postgresql.postgresql_privs:
+    database: "{{app_db_name}}"
+    type: schema
+    privs: ALL
+    roles: "{{app_db_user}}"
+    objs: "public"
+
 - name: ensure new user does not have unnecessary privileges
   become: yes
   postgresql_user:

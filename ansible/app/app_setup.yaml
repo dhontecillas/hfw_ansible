@@ -1,5 +1,6 @@
 - hosts: app_servers
   roles:
+    - postgres
     - docker
     - http
     - docker_cleanup
