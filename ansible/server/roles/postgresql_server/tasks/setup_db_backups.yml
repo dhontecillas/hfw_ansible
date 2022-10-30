@@ -1,0 +1,65 @@
+- name: "Install s3cmd to uplodad backups to S3"
+  become: yes
+  apt:
+    name: s3cmd
+    state: latest
+
+- name: "Create a place to create database backups"
+  become: yes
+  file:
+    path: /var/dbbackups
+    owner: "{{ansible_user}}"
+    group: postgres
+    mode: 0770
+    state: directory
+
+- name: "Create a place to store database backups logs"
+  become: yes
+  file:
+    path: /var/dbbackups/logs
+    owner: "{{ansible_user}}"
+    group: postgres
+    mode: 0770
+    state: directory
+
+- name: "Create a place to store database backups temp files"
+  become: yes
+  file:
+    path: /var/dbbackups/files
+    owner: "{{ansible_user}}"
+    group: postgres
+    mode: 0770
+    state: directory
+
+- name: upload s3 config file
+  template:
+    src: s3backups.conf.j2
+    dest: /var/dbbackups/s3backups.conf
+    owner: "{{ansible_user}}"
+
+- name: upload backups config file
+  template:
+    src: postgres_backups_config.json.j2
+    dest: /var/dbbackups/postgres_backups_config.json
+    owner: "{{ansible_user}}"
+
+- name: upload backup script
+  ansible.builtin.copy:
+    src: postgres_backups_from_docker.py
+    dest: /var/dbbackups/postgres_backups_from_docker.py
+    force: yes
+    mode: 0755
+
+- name: add to cron each day at three thirty in the morning
+  become: yes
+  cron:
+    name: cron_backup_data
+    user: "{{ansible_user}}"
+    day: "*"
+    hour: "3"
+    minute: "30"
+    job: >-
+      PGBK_DIR=/var/dbbackups
+      python3 /var/dbbackups/postgres_backups_from_docker.py
+      1>> /var/dbbackups/logs/$(date +%Y_%m_%d).stdout.log
+      2>> /var/dbbackups/logs/$(date +%Y_%m_%d).stderr.log
