@@ -15,6 +15,7 @@
       REGISTRY_STORAGE_CACHE_BLOBDESCRIPTOR: "inmemory"
       REGISTRY_STORAGE_S3_ACCESSKEY: "{{aws_s3_docker_registry_key}}"
       REGISTRY_STORAGE_S3_SECRETKEY: "{{aws_s3_docker_registry_secret}}"
+      REGISTRY_HTTP_SECRET: "{{aws_s3_docker_registry_http_secret}}"
     published_ports:
       - 127.0.0.1:5000:5000
     restart_policy: unless-stopped
