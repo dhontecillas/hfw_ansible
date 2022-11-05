@@ -1,3 +1,7 @@
+- name: "Check that we have a docker port for the new deployment {{app_docker_port}} <-"
+  ansible.builtin.shell: "false"
+  when: not app_docker_port.stdout
+
 - name: "NGINX write configuration for {{ app_name }} @ {{ app_domain }}:"
   become: yes
   when: app_ssl == true
