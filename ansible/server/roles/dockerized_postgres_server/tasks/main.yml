@@ -1,0 +1,17 @@
+- name: "Pull postgresql registry image: postgres:{{postgresql_version}}"
+  docker_image:
+    name: postgres:{{postgresql_version}}
+    source: pull
+
+- name: "Run postgresql at startup"
+  docker_container:
+    image: postgres:{{postgresql_version}}
+    name: postgres_{{postgresql_version}}
+    env:
+      POSTGRES_PASSWORD={{postgresql_password}}
+      PGDATA=/var/lib/postgresql/data
+    published_ports:
+      - 127.0.0.1:5433:5432
+    volumes:
+      - "{{postgresql_datadir}}:/var/lib/postgresql/data"
+    restart_policy: unless-stopped

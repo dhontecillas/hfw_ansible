@@ -1,0 +1,10 @@
+- name: "Pull redis registry image: redis:latest"
+  docker_image:
+    name: redis:latest
+    source: pull
+
+- name: "Run redis at startup"
+  docker_container:
+    image: redis:7-alpine
+    name: redis_alpine
+    restart_policy: unless-stopped
