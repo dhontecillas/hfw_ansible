@@ -1,0 +1,14 @@
+ansible_user: hfwuser
+app_domain: hfwserver.lh
+app_name: papp
+app_release: "HERE_THE_GIT_COMMIT_TO_RELEASE"
+app_ssl: false
+app_db_host: 172.17.0.1
+app_db_name: papp
+app_db_user: papp
+app_db_password: papp
+app_skip_docker_cleanup: false
+http_media_base: "/var/www"
+app_source_static_files: "/the_path_to_the_app_to_deploy_for/example/app/static"
+# this var will not be used for deployment, for fetching a DB backup:
+app_db_backup_file: "/the_path_to_the_app_to_deploy_for/example/app/tmp_backup"

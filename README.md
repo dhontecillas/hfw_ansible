@@ -26,7 +26,6 @@ cd ansible/server
 source ./depl.sh [hosts_file] [extra_vars_file]
 ```
 
-
 ## Docker repository
 
 ### S3
@@ -63,3 +62,13 @@ Security policy for the created account
   ]
 }
 ```
+
+## Deploy an app
+
+An app consists of:
+- docker image
+- static assets
+
+The docker image could serve the static files too, to simplify
+the deployment, but we can leverage the existing nginx server
+to deploy those files.

@@ -1,2 +1,5 @@
 [singlehost]
 hfwserver.lh
+
+[app_servers]
+hfwserver.lh
