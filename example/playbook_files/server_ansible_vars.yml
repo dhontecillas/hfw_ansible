@@ -1,0 +1,21 @@
+ansible_user: hfwuser
+
+postgresql_version: 15
+postgresql_datadir: /var/lib/postgresql/15/main
+postgresql_password: HERE_YOU_PUT_POSTGRESQL_PASSWORD
+postgresql_host: 127.0.0.1
+postgresql_port: 5433
+
+aws_s3_docker_registry_user: docker_registry
+aws_s3_docker_registry_key: YOUR_AWS_KEY
+aws_s3_docker_registry_secret: YOUR_AWS_SECRET
+aws_s3_docker_registry_bucket: YOUR_AWS_S3_DOCKER_BUCKET_NAME
+Aws_s3_docker_registry_region: YOUR_AWS_S3_REGION_LIKE_EU-WEST-3
+aws_s3_docker_registry_http_secret: A_LONG_RANDOM_SECRET
+
+# we are reusing the user to upload the db backups
+aws_s3_dbdumps_user: docker_registry
+aws_s3_dbdumps_key: YOUR_AWS_KEY
+aws_s3_dbdumps_secret: YOUR_AWS_SECRET
+aws_s3_dbdumps_bucket: YOUR_AWS_S3_DBDUMPS_BUCKET_NAME
+Aws_s3_dbdumps_region: YOUR_AWS_S3_REGION_LIKE_EU-WEST-3

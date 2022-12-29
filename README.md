@@ -23,7 +23,7 @@ some basic software:
 eval `ssh-agent`
 ssh-add hfw_local_server
 cd ansible/server
-source ./depl.sh
+source ./depl.sh [hosts_file] [extra_vars_file]
 ```
 
 

@@ -1,20 +1,8 @@
-- hosts: mainsite
+- hosts: singlehost
   remote_user: "{{ansible_user}}"
   roles:
     - updated_server
-
-- hosts: db_servers
-  roles:
-    - postgresql_server
-
-- hosts: docker_servers
-  roles:
     - docker_server
-
-- hosts: redis_servers
-  roles:
+    - postgresql_server
     - redis_server
-
-- hosts: http_servers
-  roles:
     - nginx_server
