@@ -13,11 +13,7 @@
     published_ports:
       - 8000
     restart_policy: unless-stopped
-    env:
-      POSTGRESQL_HOST: "{{app_db_host}}"
-      POSTGRESQL_NAME: "{{app_db_name}}"
-      POSTGRESQL_USER: "{{app_db_user}}"
-      POSTGRESQL_PASSWORD: "{{app_db_password}}"
+    env: "{{app_docker_env}}"
 
 - name: "Find published port"
   shell:

@@ -12,3 +12,8 @@ http_media_base: "/var/www"
 app_source_static_files: "/the_path_to_the_app_to_deploy_for/example/app/static"
 # this var will not be used for deployment, for fetching a DB backup:
 app_db_backup_file: "/the_path_to_the_app_to_deploy_for/example/app/tmp_backup"
+app_docker_env:
+  POSTGRESQL_HOST: "172.17.0.1"
+  POSTGRESQL_NAME: "papp"
+  POSTGRESQL_USER: "papp"
+  POSTGRESQL_PASSWORD: "papp"

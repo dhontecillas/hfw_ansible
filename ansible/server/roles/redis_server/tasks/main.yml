@@ -4,4 +4,9 @@
     name:
       - redis-server
 
+- name: Enable bind to docker interface
+  become: yes
+  template:
+    src: redis.conf.j2
+    dest: "/etc/redis/redis.conf"
 
