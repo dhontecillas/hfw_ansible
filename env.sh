@@ -2,7 +2,7 @@
 
 if [[ "$VIRTUAL_ENV" ]]
 then
-    echo "enviroment already set $VIRTUAL_ENF"
+    echo "enviroment already set $VIRTUAL_ENV"
 else
     if [[ ! -d "venv" ]]
     then
