@@ -1,0 +1,25 @@
+- name: "Install Certbot"
+  become: yes
+  apt:
+   name: certbot
+   state: present
+
+- name: Check if certificate already exists.
+  become: yes
+  stat:
+    path: /etc/letsencrypt/live/{{app_domain}}/priv_key.pem
+  register: letsencrypt_cert
+
+- name: Generate new certificate if one doesn't exist.
+  become: yes
+  when: letsencrypt_cert.stat.exists == False
+  shell: certbot certonly --standalone --noninteractive --agree-tos --email {{ certbot_admin_email }} -d {{app_domain}} --pre-hook "service nginx stop" --post-hook "service nginx start"
+
+- name: Make sure we have cert renewal as cronjob
+  become: yes
+  ansible.builtin.cron:
+    name: renew certificates
+    hour: 3
+    minute: 5
+    job: certbot renew --pre-hook "service nginx stop" --post-hook "service nginx start"
+    state: present

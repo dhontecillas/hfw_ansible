@@ -1,7 +1,7 @@
 ## SERVING_DOCKER_PORT {{app_name}}_{{app_release}}
 
 upstream app_server_{{app_name}} {
-  server 127.0.0.1:{{app_docker_port}};
+  server 127.0.0.1:{{app_docker_port.stdout}};
 }
 
 server {
@@ -32,15 +32,15 @@ server {
   ssl_prefer_server_ciphers   on;
 #  ssl_session_timeout  5m;
 
-  access_log /var/log/nginx/{{app_domain}}.access.log;
-  error_log /var/log/nginx/{{app_domain}}.error.log info;
+  access_log /var/log/nginx/{{app_domain}}.{{app_release}}.access.log;
+  error_log /var/log/nginx/{{app_domain}}.{{app_release}}.error.log info;
 
   keepalive_timeout 5;
 
   # nginx should serve up static files and never send to the WSGI server
   location /static {
     autoindex on;
-    alias /var/www/static/{{app_domain}}/{{app_name}};
+    alias /var/www/static/{{app_domain}}/{{app_release}};
   }
 
   location /media {

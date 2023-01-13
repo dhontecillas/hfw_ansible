@@ -16,6 +16,10 @@
     src: postgresql.conf.j2
     dest: "/etc/postgresql/{{postgresql_version}}/main/postgresql.conf"
 
+- name: Start redis unit after docker unit
+  become: yes
+  shell: sed -i 's/After=network.target/After=docker.service/g' /lib/systemd/system/postgresql\@.service
+
 - name: restart postgresql
   become: yes
   service:
