@@ -15,6 +15,12 @@
   become: yes
   when: nginx_default_file.stat.exists
 
+- name: add json logging to nginx
+  become: yes
+  template:
+    src: nginx.conf
+    dest: "/etc/nginx/nginx.conf"
+
 - name: restart nginx
   service: name=nginx state=restarted
   become: yes
