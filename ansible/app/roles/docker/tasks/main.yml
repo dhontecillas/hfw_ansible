@@ -6,16 +6,34 @@
     name: "127.0.0.1:5000/{{app_name}}:{{app_release}}"
     source: pull
 
-- name: "Create new docker container"
+- name: "Create directory to store the app log"
+  become: yes
+  file:
+    state: directory
+    path: "/var/log/apps/{{app_name}}"
+    mode: '770'
+    owner: "{{ansible_user}}"
+    group: "{{ansible_user}}"
+
+- name: "Select host port ({{app_host_port_a}} or {{app_host_port_b}} for app port {{app_exposed_port}}"
+  shell: if [ "{{app_host_port_a}}" == $(docker port $(docker ps | grep "{{app_name}}" | cut -f 1 -d ' ') | grep "^{{app_exposed_port}}" | cut -f 2 -d ':') ]; then echo '{{app_host_port_b}}'; else echo '{{app_host_port_a}}'; fi
+  args:
+    executable: /bin/bash
+  register: app_selected_host_port
+
+- name: "Create new docker container -> {{app_selected_host_port}}"
   docker_container:
     image: "127.0.0.1:5000/{{app_name}}:{{app_release}}"
     name: "{{app_name}}_{{app_release}}"
     published_ports:
-      - 8000
+      - "127.0.0.1:{{app_selected_host_port.stdout}}:8000"
+    volumes:
+      - "/var/log/apps/{{app_name}}:/var/log/{{app_name}}"
     restart_policy: unless-stopped
     env: "{{app_docker_env}}"
 
-- name: "Find published port"
+- name: "Find metrics published port"
   shell:
-    cmd: "docker port {{app_name}}_{{app_release}} | cut -f 2 -d ':'"
-  register: app_docker_port
+    cmd: "docker port {{app_name}}_{{app_release}} | grep '^{{app_exposed_metrics_port}}' | cut -f 2 -d ':'"
+  when: (app_exposed_metrics_port is defined) and (app_exposed_metrics_port|length > 0)
+  register: app_docker_metrics_port

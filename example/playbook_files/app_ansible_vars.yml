@@ -2,6 +2,9 @@ ansible_user: hfwuser
 app_domain: hfwserver.lh
 app_name: papp
 app_release: "HERE_THE_GIT_COMMIT_TO_RELEASE"
+app_exposed_port: 8000
+app_host_port_a: 30000
+app_host_port_b: 30001
 app_ssl: false
 app_db_host: 172.17.0.1
 app_db_name: papp

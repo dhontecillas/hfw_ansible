@@ -1,6 +1,6 @@
-- name: "Check that we have a docker port for the new deployment {{app_docker_port}} <-"
+- name: "Check that we have a docker port for the new deployment"
   ansible.builtin.shell: "false"
-  when: not app_docker_port.stdout
+  when: not app_selected_host_port.stdout
 
 - name: "NGINX write configuration for {{ app_name }} @ {{ app_domain }}:"
   become: yes
@@ -36,3 +36,15 @@
   ansible.builtin.copy:
     src: "{{app_source_static_files}}"
     dest: "/var/www/static/{{app_domain}}/{{app_release}}"
+
+- name: "Restart Nginx"
+  become: yes
+  service:
+    name: nginx
+    state: restarted
+
+- name: "Remove old static files"
+  become: yes
+  shell: "ls -1 | grep -v {{app_release}} | xargs rm -rf"
+  args:
+    chdir: "/var/www/static/{{app_domain}}"

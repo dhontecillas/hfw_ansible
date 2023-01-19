@@ -37,4 +37,11 @@
     name: "{{ansible_user}}"
     group: docker
 
-
+- name: Create directory to store the app logs
+  become: yes
+  file:
+    state: directory
+    path: /var/log/apps
+    mode: '770'
+    owner: "{{ansible_user}}"
+    group: "{{ansible_user}}"
