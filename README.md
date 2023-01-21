@@ -72,3 +72,42 @@ An app consists of:
 The docker image could serve the static files too, to simplify
 the deployment, but we can leverage the existing nginx server
 to deploy those files.
+
+
+# How the server gets configured
+
+## Nginx
+
+A single instance is running for all the apps, and for each app an
+entry into the `/etc/nginx/conf.d` directory is created.
+
+For the access logs (the general nginx one and the per app access log)
+a new formatter is set, to log the output in json format, so it can
+be queried with the [`jq`](https://stedolan.github.io/jq/) tool, and
+it can also be easily feed into grafana loki or some other service.
+
+## Postgresql
+
+A single instance is configured.
+
+In order to bind postgres to the docker network interface, the systemd
+unit is changed to wait for the docker unit to be started (instead of
+waiting for the network unit).
+
+## Redis
+
+A single shared instance is configured.
+
+In order to bind postgres to the docker network interface, the systemd
+unit is changed to wait for the docker unit to be started (instead of
+waiting for the network unit).
+
+## App logs
+
+A directory is created in `/var/log/apps/{{app_name}}`, ownerd by
+the unprivileged user, so it can be mounted into the running container,
+to write logs. This way, the `stdout` can be redirected to a file,
+or additional log files can be written there (so, there is no
+need to `docker exec -ti {{container}} /bin/sh` to look at them,
+or check the docker stdout with `docker logs {{container}}`. And
+those files can also be scrapped by a log reporting agent.
