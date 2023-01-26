@@ -37,6 +37,5 @@ fi
 if [ -z "$HFW_APP_RELEASE" ]; then
     echo "No App Release Hash Set"
 else
-    echo "$HFW_APP_HOSTS_FILE $HFW_APP_NAME $HFW_APP_RELEASE"
-    # ansible-playbook -i $HFW_APP_HOSTS_FILE app_setup.yaml --extra-vars "app_name=$HFW_APP_NAME app_release=$HFW_APP_RELEASE" -K --become-method=su
+    ansible-playbook -i $HFW_APP_HOSTS_FILE app_setup.yaml --extra-vars "app_name=$HFW_APP_NAME app_release=$HFW_APP_RELEASE" -K --become-method=su
 fi
