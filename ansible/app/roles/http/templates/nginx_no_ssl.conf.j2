@@ -7,8 +7,6 @@ server {
   listen 80;
   server_name {{app_domain}};
 
-  ssl                  off;
-
   access_log /var/log/nginx/{{app_domain}}.{{app_release}}.access.log.json json_analytics;
   error_log /var/log/nginx/{{app_domain}}.{{app_release}}.error.log.json info;
 

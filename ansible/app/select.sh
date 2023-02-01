@@ -24,6 +24,7 @@ if [ -z ${HFW_APP_HOSTS_FILE} ]; then
         echo " set the HFW_HOSTS_FILE_BASE to select"
         echo " from recent commits in your git history"
         echo "-----------------------------------------"
+        export HFW_HOSTS_FILES_BASE=$HOME
     fi
     cd $HFW_HOSTS_FILES_BASE
     export HFW_APP_HOSTS_FILE=$(fzf --header "select hosts file")
@@ -37,5 +38,5 @@ fi
 if [ -z "$HFW_APP_RELEASE" ]; then
     echo "No App Release Hash Set"
 else
-    ansible-playbook -i $HFW_APP_HOSTS_FILE app_setup.yaml --extra-vars "app_name=$HFW_APP_NAME app_release=$HFW_APP_RELEASE" -K --become-method=su
+    ansible-playbook -i $HFW_HOSTS_FILES_BASE/$HFW_APP_HOSTS_FILE app_setup.yaml --extra-vars "app_name=$HFW_APP_NAME app_release=$HFW_APP_RELEASE" -K --become-method=su
 fi
