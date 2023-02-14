@@ -24,7 +24,7 @@ if [ -z ${HFW_APP_HOSTS_FILE} ]; then
         echo " set the HFW_HOSTS_FILE_BASE to select"
         echo " from recent commits in your git history"
         echo "-----------------------------------------"
-        export HFW_HOSTS_FILES_BASE=$HOME
+        export HFW_HOSTS_FILES_BASE=$(find $HOME -type d | fzf)
     fi
     cd $HFW_HOSTS_FILES_BASE
     export HFW_APP_HOSTS_FILE=$(fzf --header "select hosts file")
