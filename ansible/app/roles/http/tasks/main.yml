@@ -26,16 +26,24 @@
 - name: "Create static files directory"
   become: yes
   ansible.builtin.file:
-    path: "/var/www/static"
+    path: "/var/www/static/{{app_domain}}/{{app_release}}"
     group: "{{ansible_user}}"
     owner: "{{ansible_user}}"
     mode: 0777
     state: directory
 
 - name: "Upload static files"
+  when: app_source_static_files is defined
   ansible.builtin.copy:
     src: "{{app_source_static_files}}"
     dest: "/var/www/static/{{app_domain}}/{{app_release}}"
+
+- name: "Upload static files TAR"
+  when: app_source_static_files_tar is defined
+  ansible.builtin.unarchive:
+    src: "{{app_source_static_files_tar}}"
+    dest: "/var/www/static/{{app_domain}}/{{app_release}}"
+    owner: "{{ansible_user}}"
 
 - name: "Restart Nginx"
   become: yes
