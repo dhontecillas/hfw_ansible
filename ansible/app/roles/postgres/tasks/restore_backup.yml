@@ -1,14 +1,14 @@
 - name: upload backup file
   copy:
-    src: "{{dbrestoredump}}"
-    dest: /home/{{deploy_user}}/dbrestoredump.sql.gz
+    src: "{{db_restoredump}}"
+    dest: /home/{{ansible_user}}/dbrestoredump.sql.gz
   when: dbrestoredump != ""
 
 - name: restore database from dump
   postgresql_db:
-    db: "{{dbname}}"
-    login_user: "{{dbuser}}"
-    login_password: "{{dbpassword}}"
+    db: "{{app_db_name}}"
+    login_user: "{{app_db_user}}"
+    login_password: "{{app_db_password}}"
     state: restore
-    target: /home/{{deploy_user}}/dbrestoredump.sql.gz
+    target: /home/{{ansible_user}}/dbrestoredump.sql.gz
   when: dbrestoredump != ""
