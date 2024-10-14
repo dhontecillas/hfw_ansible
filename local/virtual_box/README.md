@@ -49,7 +49,7 @@ new one. Remember to give it a password, so the experience will be
 the same as when you use a key pair for a real server.
 
 ```
-ssh-keygen -t ed25519 -C "yourname@yourdomain.com" ~/.ssh/hfw_local_server
+ssh-keygen -t ed25519 -C "yourname@yourdomain.com" -f ~/.ssh/hfw_local_server
 ```
 
 And copy it to the `authorized_keys` file for `webdev` user under the `.ssh` dir in your

@@ -11,7 +11,7 @@
   notify:
     - restart nginx
 
-- include: letsencrypt.yml
+- include_tasks: letsencrypt.yml
   when: app_ssl == true
 
 - name: "NGINX write configuration for {{ app_name }} @ {{ app_domain }}:"
